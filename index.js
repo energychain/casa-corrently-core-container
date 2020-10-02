@@ -51,7 +51,9 @@ const boot = async function() {
     fs.mkdirSync('./run');
   } catch(e) {}
   fs.writeFileSync('./run/config.json',JSON.stringify(tmpconfig));
-
+  if(typeof tmpconfig.launcher !== 'undefined') {
+    selectedlauncher = tmpconfig.launcher;
+  }
 
   configjson = process.cwd() + '/run/config.json';
   console.log('Runtime Configuration: ',configjson);

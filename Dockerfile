@@ -6,4 +6,4 @@ COPY sample_config.json ./
 USER node
 COPY --chown=node:node . .
 EXPOSE 3000
-CMD ["./docker_run.sh"]
+CMD ["node ./index.js /casa-corrently-docker"]
