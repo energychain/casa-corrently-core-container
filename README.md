@@ -17,6 +17,7 @@ https://heroku.com/deploy?template=https://github.com/energychain/casa-corrently
 ```shell
 git clone https://github.com/energychain/casa-corrently-core-container casa-corrently
 cd casa-corrently
+npm config set unsafe-perm true
 npm install
 ```
 
