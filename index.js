@@ -10,9 +10,7 @@ const launchContainer = async function(launchers) {
       process.exit(2);
     }
     for(let i=0;i<launchers.length;i++) {
-      try {
-        fs.mkdirSync(launchers[i].cwd);
-      } catch(e) {}
+
       try {
         fs.mkdirSync(launchers[i].cwd+launchers[i].name);
       } catch(e) {}
@@ -45,18 +43,29 @@ const boot = async function() {
         configjson = process.argv[2];
     }
   }
-  if(process.argv.length > 3) {
-    if(await fileExists(process.argv[3])) {
-        selectedlauncher = process.argv[3];
-    }
+  if(await fileExists('./config.json')) {
+      configjson = './config.json';
   }
+  let tmpconfig = JSON.parse(fs.readFileSync(configjson));
+  try {
+    fs.mkdirSync('./run');
+  } catch(e) {}
+  fs.writeFileSync('./run/config.json',JSON.stringify(tmpconfig));
+
+
+  configjson = process.cwd() + '/run/config.json';
+  console.log('Runtime Configuration: ',configjson);
+  if(process.argv.length > 3) {
+      selectedlauncher = process.argv[3];
+  }
+  console.log('Runtime Launcher: ',selectedlauncher);
   if(selectedlauncher == 'openems-edge') {
     launchers.push({
       'name'       : 'openems-edge',
-      'script'    : 'npm install;npm ci;node ./app.js '+configjson,         // Script to be run
+      'script'    : 'npm install  --prefix ./openems-edge casa-corrently-openems@0.5.25;node ./openems-edge/node_modules/casa-corrently-openems/app.js  '+configjson,         // Script to be run
       'execMode' : 'fork',        // Allows your app to be clustered
       max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
-      'cwd'     : './openems/',
+      'cwd'     : './run/',
     });
   }
 if(selectedlauncher == 'ipfs-edge') {
@@ -65,7 +74,7 @@ if(selectedlauncher == 'ipfs-edge') {
     'script'    : 'npm install;npm ci;node ./standalone.js '+configjson,         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
     max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
-    'cwd'     : './ipfs/',
+    'cwd'     : './run/',
   });
 }
 if(selectedlauncher == 'cloud-edge') {
