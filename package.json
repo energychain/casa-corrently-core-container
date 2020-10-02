@@ -1,0 +1,38 @@
+{
+  "name": "casa-corrently-core-container",
+  "version": "1.0.0",
+  "description": "Container service to run and manage local instance of Casa Corrently Energy Cost Monitoring",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./index.js",
+  },
+  "bin": {
+    "casa-corrently-container": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/energychain/casa-corrently-core-container.git"
+  },
+  "keywords": [
+    "ems",
+    "corrently",
+    "energy",
+    "container",
+    "metering"
+  ],
+  "author": "STROMDAO GmbH <kontakt@stromdao.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/energychain/casa-corrently-core-container/issues"
+  },
+  "funding": {
+    "type": "corporation",
+    "url": "https://www.stromdao.de/crowdfunding/info"
+  },
+  "homepage": "https://github.com/energychain/casa-corrently-core-container#readme",
+  "dependencies": {
+    "casa-corrently": "^1.0.37",
+    "pm2": "^4.5.0"
+  }
+}

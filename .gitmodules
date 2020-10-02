@@ -1,0 +1,9 @@
+[submodule "web"]
+	path = web
+	url = git@github.com:energychain/casa-corrently-webinterface.git
+[submodule "openems"]
+	path = openems
+	url = git@github.com:energychain/casa-corrently-openems.git
+[submodule "ipfs"]
+	path = ipfs
+	url = git@github.com:energychain/casa-corrently-ipfs-edge.git
