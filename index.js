@@ -62,7 +62,7 @@ const boot = async function() {
   if(selectedlauncher == 'openems-edge') {
     launchers.push({
       'name'       : 'openems-edge',
-      'script'    : 'npm install  --prefix ./openems-edge casa-corrently-openems@0.5.25;node ./openems-edge/node_modules/casa-corrently-openems/app.js  '+configjson,         // Script to be run
+      'script'    : 'npm install  --prefix ./openems-edge casa-corrently-openems@latest;node ./openems-edge/node_modules/casa-corrently-openems/app.js  '+configjson,         // Script to be run
       'execMode' : 'fork',        // Allows your app to be clustered
       max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
       'cwd'     : './run/',
