@@ -10,7 +10,7 @@ This module will ensure that your configured processes like the casa corrently w
 ### Prerequisites
 - npm and Node JS (version 12 recommended)
 
-###  via Shell
+###  via CLI
 ```shell
 npm config set unsafe-perm true
 npm install -g casa-corrently-core-container
@@ -18,7 +18,13 @@ npm install -g casa-corrently-core-container
 - On a Raspberry PI install takes about 10 minutes
 - Unsafe-perm is only required in case node-gyp build fails
 
-## Usage
+### via Docker
+```shell
+docker pull stromdao/casa-corrently-container
+docker run docker run --name casa-corrently-container --net='host' -d stromdao/casa-corrently-container <HTTPS_URL_TO_CONFIG>
+```
+
+## Usage (CLI)
 
 ```shell
 casa-corrently-container /some/path/config.json
