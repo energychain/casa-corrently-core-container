@@ -50,6 +50,9 @@ const bootSingle = async function() {
       configjson = './config.json';
       fs.writeFileSync('./config.json',JSON.stringify(res.data));
     }
+  } else {
+    const fromin = fs.readFileSync(0, 'utf-8');
+    fs.writeFileSync('./config.json',fromin);
   }
   if(await fileExists('./config.json')) {
       configjson = './config.json';
