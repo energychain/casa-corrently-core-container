@@ -24,6 +24,9 @@ docker pull stromdao/casa-corrently-container
 docker run docker run --name casa-corrently-container --net='host' -d stromdao/casa-corrently-container <HTTPS_URL_TO_CONFIG>
 ```
 
+Logging
+`docker exec -ti casa-corrently-container /home/node/app/node_modules/pm2/bin/pm2 logs`
+
 ## Usage (CLI)
 
 ```shell

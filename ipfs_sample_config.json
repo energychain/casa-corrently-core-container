@@ -1,0 +1,6 @@
+{
+  "name": "IPFS EDGE (no metering)",
+  "publisher": "casa-corrently-ipfs-edge",
+  "launcher": "ipfs-edge",
+  "uuid":"sample-config"
+}

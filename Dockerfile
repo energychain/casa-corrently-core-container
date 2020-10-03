@@ -5,6 +5,9 @@ COPY package*.json ./
 RUN npm i
 RUN mkdir -p run && mkdir -p run/openems-edge
 RUN npm install  --prefix ./run/openems-edge casa-corrently-openems@latest
+RUN npm install  --prefix ./run/p2p-edge casa-corrently@latest;npm install  --prefix ./run/p2p-edge casa-correntl-ipfs-edge@latest;
+RUN npm install  --prefix ./run/cloud-edge casa-corrently@latest;npm install  --prefix ./run/cloud-edge casa-correntl-ipfs-edge@latest;
+RUN ln -s /home/node/app/index.js /home/node/app/start; chmod 777  /home/node/app/start
 USER node
 COPY --chown=node:node . .
 EXPOSE 3000
