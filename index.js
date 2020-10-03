@@ -46,7 +46,7 @@ const boot = async function() {
     if(process.argv[2].substr(0,8) == "https://") {
       let res = await axios.get(process.argv[2]);
       configjson = './config.json';
-      fs.writeFileSync(JSON.stringify(res.data));
+      fs.writeFileSync('./config.json',JSON.stringify(res.data));
     }
   }
   if(await fileExists('./config.json')) {

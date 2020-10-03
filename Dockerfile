@@ -8,4 +8,5 @@ RUN npm install  --prefix ./run/openems-edge casa-corrently-openems@latest
 USER node
 COPY --chown=node:node . .
 EXPOSE 3000
-CMD ["./docker_run.sh"]
+ENTRYPOINT ["node", "./index.js"]
+CMD ["/home/node/app/p2p_sample_config.json"]
