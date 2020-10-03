@@ -25,6 +25,7 @@ casa-corrently-container /some/path/config.json
 ### Notes
 - Ensure you have a launcher set in your `config.json` file!
 - Use a full path (not a relative path) to start it
+- If you have pm2 installed - you might use it to start the container itself.
 
 ### Logging
 Logfiles get created per service you might monitor them via:

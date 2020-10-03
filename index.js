@@ -79,6 +79,15 @@ if(selectedlauncher == 'ipfs-edge') {
     'cwd'     : './run/',
   });
 }
+if(selectedlauncher == 'p2p-edge') {
+  launchers.push({
+    'name'       : 'p2p-edge',
+    'script'    : 'npm install --prefix ./cloud-edge casa-corrently@latest;npm install --prefix ./cloud-edge casa-corrently-ipfs-edge@latest;node ./cloud-edge/node_modules/casa-corrently/standalone.js '+configjson,         // Script to be run
+    'execMode' : 'fork',        // Allows your app to be clustered
+    max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
+    'cwd'     : './run/',
+  });
+}
 if(selectedlauncher == 'cloud-edge') {
   launchers.push({
     'name'       : 'cloud-edge',
