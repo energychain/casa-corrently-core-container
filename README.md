@@ -1,12 +1,9 @@
 # casa-corrently-core-container
-Container service to run and manage local instance of Casa Corrently Energy Cost Monitoring. Use it to manage //boxes// at edges.
+Container service to run and manage local instance of Casa Corrently Energy Cost Monitoring. Use it to manage *boxes* at edges.
 
 ![npm](https://img.shields.io/npm/dw/casa-corrently-core-container) [![Build Status](https://travis-ci.com/energychain/casa-corrently-core-container.svg?branch=master)](https://travis-ci.com/energychain/casa-corrently-core-container) [![Code Quality](https://www.code-inspector.com/project/12872/score/svg)](https://frontend.code-inspector.com/public/project/12872/casa-corrently-core-container/dashboard) [![chat](https://img.shields.io/badge/chat-support-brightgreen)](https://tawk.to/chat/5c53189451410568a109843f/default)
 
-
-## QuickStart
-You might deploy your personal test environment easily using [this Heroku deployment template](
-https://heroku.com/deploy?template=https://github.com/energychain/casa-corrently-core-container).
+This module will ensure that your configured processes like the casa corrently webinterface, openems edge etc... run and get updated as soon as a new release comes out. It provides detailed login via [pm2](https://pm2.io/) and monitors RAM usage of sub processes.
 
 ## Installation
 
@@ -15,22 +12,26 @@ https://heroku.com/deploy?template=https://github.com/energychain/casa-corrently
 
 ###  via Shell
 ```shell
-git clone https://github.com/energychain/casa-corrently-core-container casa-corrently
-cd casa-corrently
-npm config set unsafe-perm true
-npm install
+npm install -g casa-corrently-core-container
 ```
-
-### using pm2
-Container management is done using pm2.
-
+- On a Raspberry PI install takes about 10 minutes
 
 ## Usage
-Configure settings in `sample_config.json` to your needs.
 
 ```shell
-npm start ./sample_config.json
+casa-corrently-container /some/path/config.json
 ```
+
+### Notes
+- Ensure you have a launcher set in your `config.json` file!
+- Use a full path (not a relative path) to start it
+
+### Logging
+Logfiles get created per service you might monitor them via:
+`pm2 logs`
+
+or find them in:
+`~/.pm2/logs/`
 
 ## Funding
 This module is part of the Corrently Ecosystem which looks for funding in Germany:  https://www.stromdao.de/crowdfunding/info
