@@ -33,6 +33,11 @@ Logfiles get created per service you might monitor them via:
 or find them in:
 `~/.pm2/logs/`
 
+## Supported Flavors
+ - (OpenEMS-Edge)[https://github.com/energychain/casa-corrently-openems] as of V0.5.26
+ - (Cloud-Edge)[https://github.com/energychain/casa-corrently-webinterface] as of V1.0.25
+
+
 ## Funding
 This module is part of the Corrently Ecosystem which looks for funding in Germany:  https://www.stromdao.de/crowdfunding/info
 ![STROMDAO - Corrently Crowdfunding](https://squad.stromdao.de/nextcloud/index.php/s/Do4pzpM7KndZxAx/preview)
