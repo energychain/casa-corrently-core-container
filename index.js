@@ -2,6 +2,7 @@
 
 const pm2 = require('pm2');
 const fs = require('fs');
+const axios = require('axios');
 
 const launchContainer = async function(launchers) {
   pm2.connect(async function(err) {
@@ -42,10 +43,16 @@ const boot = async function() {
     if(await fileExists(process.argv[2])) {
         configjson = process.argv[2];
     }
+    if(process.argv[2].substr(0,8) == "https://") {
+      let res = await axios.get(process.argv[2]);
+      configjson = './config.json';
+      fs.writeFileSync(JSON.stringify(res.data));
+    }
   }
   if(await fileExists('./config.json')) {
       configjson = './config.json';
   }
+
   let tmpconfig = JSON.parse(fs.readFileSync(configjson));
   try {
     fs.mkdirSync('./run');

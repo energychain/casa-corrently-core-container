@@ -26,5 +26,7 @@
    "community": "OpenEMS",
    "uuid":"dev_fems",
    "publisher":"casa-corrently-ipfs-edge",
-   "bridge":"casa-corrently-ipfs-bridge"
+   "bridge":"casa-corrently-ipfs-bridge",
+   "launcher":"openems-edge",
+   "port":3002
 }

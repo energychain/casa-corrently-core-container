@@ -3,7 +3,7 @@ targets:
   docker-build:
     cmd: "docker build -t stromdao/casa-corrently-container ."
   docker-run:
-    cmd: "docker run --name casa-corrently-container -p 8081:3000 -d stromdao/casa-corrently-container "
+    cmd: "docker run --name casa-corrently-container --net='host' -d stromdao/casa-corrently-container "
   docker-push:
     cmd: "docker push stromdao/casa-corrently-container"
   docker-create-service:

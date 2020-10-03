@@ -12,9 +12,11 @@ This module will ensure that your configured processes like the casa corrently w
 
 ###  via Shell
 ```shell
+npm config set unsafe-perm true
 npm install -g casa-corrently-core-container
 ```
 - On a Raspberry PI install takes about 10 minutes
+- Unsafe-perm is only required in case node-gyp build fails
 
 ## Usage
 
