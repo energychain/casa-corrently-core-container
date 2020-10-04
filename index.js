@@ -19,6 +19,7 @@ const launchContainer = async function(launchers,taskid) {
           "name": "casa-corrently-"+launchers[i].name+"-"+taskid,
           "version": "0.0.1"
       }));
+      launchers[i].name += '-' + taskid;
       pm2.start(launchers[i], function(err, apps) {
         pm2.disconnect();   // Disconnects from PM2
         if (err) throw err
