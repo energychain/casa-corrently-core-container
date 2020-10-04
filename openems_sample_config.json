@@ -24,7 +24,7 @@
      "scaleFactor": 10000000,
      "powerScaleFactor": 1,
      "community": "OpenEMS",
-     "uuid":"dev_fems",
+     "uuid":"openems_container_demo",
      "ipfs_gw":"http://localhost:5001",
      "publisher":"casa-corrently-ipfs-edge",
      "bridge":"casa-corrently-ipfs-bridge",
