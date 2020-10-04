@@ -21,7 +21,12 @@ npm install -g casa-corrently-core-container
 ### via Docker
 ```shell
 docker pull stromdao/casa-corrently-container
-docker run docker run --name casa-corrently-container --net='host' -d stromdao/casa-corrently-container <HTTPS_URL_TO_CONFIG>
+docker run --name casa-corrently-container --net='host' -d stromdao/casa-corrently-container <HTTPS_URL_TO_CONFIG>
+```
+
+docker run -d --name ipfs-node --net='host' stromdao/ipfs-docker-container:latest
+```
+cat ipfs_edge.json | docker exec casa-corrently-container node ./index.js -
 ```
 
 Logging

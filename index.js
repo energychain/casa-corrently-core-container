@@ -58,6 +58,7 @@ const bootSingle = async function() {
       configjson = './config.json';
   }
 
+  console.log('Runtime Configuration: ',configjson);
   let selectedlauncher = 'cloud-edge';
   let tmpconfig = JSON.parse(fs.readFileSync(configjson));
   taskid = tmpconfig.uuid;
@@ -73,7 +74,7 @@ const bootSingle = async function() {
   }
 
   configjson = process.cwd() + '/run/config-'+taskid+'.json';
-  console.log('Runtime Configuration: ',configjson);
+
   if(process.argv.length > 3) {
       selectedlauncher = process.argv[3];
   }
