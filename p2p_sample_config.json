@@ -20,6 +20,5 @@
    "publisher":"../casa-corrently-ipfs-edge",
    "bridge":"casa-corrently-ipfs-bridge",
    "launcher":"p2p-edge",
-   "ipfs_gw":"http://localhost:5001",
    "uuid":"p2p_container_demo"
 }

@@ -3,6 +3,19 @@
 const pm2 = require('pm2');
 const fs = require('fs');
 const axios = require('axios');
+const { exec } = require("child_process");
+
+function execShellCommand(cmd) {
+ const exec = require('child_process').exec;
+ return new Promise((resolve, reject) => {
+  exec(cmd, (error, stdout, stderr) => {
+   if (error) {
+    console.warn(error);
+   }
+   resolve(stdout? stdout : stderr);
+  });
+ });
+}
 
 const launchContainer = async function(launchers,taskid) {
   pm2.connect(async function(err) {
@@ -19,10 +32,19 @@ const launchContainer = async function(launchers,taskid) {
           "name": "casa-corrently-"+launchers[i].name+"-"+taskid,
           "version": "0.0.1"
       }));
+      if(typeof launchers[i].preLaunch !== 'undefined') {
+            await execShellCommand(launchers[i].preLaunch);
+            delete launchers[i].preLaunch;
+            console.log("Setup completed");
+      }
       launchers[i].name += '-' + taskid;
+      console.log(launchers[i]);
       pm2.start(launchers[i], function(err, apps) {
         pm2.disconnect();   // Disconnects from PM2
-        if (err) throw err
+        if (err) {
+          console.log(err);
+          throw err
+        }
       });
     }
   });
@@ -83,44 +105,53 @@ const bootSingle = async function() {
   if(selectedlauncher == 'openems-edge') {
     launchers.push({
       'name'       : 'openems-edge',
-      'script'    : 'npm install  --prefix ./openems-edge casa-corrently-openems@latest;node ./openems-edge/node_modules/casa-corrently-openems/app.js  '+configjson,         // Script to be run
+      'script'    : './run/openems-edge/node_modules/casa-corrently-openems/app.js',         // Script to be run
       'execMode' : 'fork',        // Allows your app to be clustered
+      'args' : configjson,
       max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
       'cwd'     : './run/',
+      'preLaunch': 'npm install  --prefix ./run/openems-edge casa-corrently-openems@latest'
     });
   }
 if(selectedlauncher == 'ipfs-edge') {
   launchers.push({
     'name'       : 'ipfs-edge',
-    'script'    : 'npm install --prefix ./ipfs-edge casa-corrently-ipfs-edge@latest;node ./ipfs-edge/node_modules/casa-corrently-ipfs-edge/standalone.js '+configjson,         // Script to be run
+    'script'    : './run/ipfs-edge/node_modules/casa-corrently-ipfs-edge/standalone.js',         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
     max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
+    'args': configjson
+    'preLaunch' : 'npm install --prefix ./run/ipfs-edge casa-corrently@latest;npm install --prefix ./run/ipfs-edge casa-corrently-ipfs-edge@latest'
   });
 }
 if(selectedlauncher == 'p2p-edge') {
   launchers.push({
     'name'       : 'p2p-edge',
-    'script'    : 'npm install --prefix ./p2p-edge casa-corrently@latest;npm install --prefix ./p2p-edge casa-corrently-ipfs-edge@latest;node ./p2p-edge/node_modules/casa-corrently/standalone.js '+configjson,         // Script to be run
+    'script'    :  './run/p2p-edge/node_modules/casa-corrently/standalone.js',         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
-    max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
+    max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
+    'args' : configjson,
+    'preLaunch': 'npm install --prefix ./run/p2p-edge casa-corrently@latest;npm install --prefix ./run/p2p-edge casa-corrently-ipfs-edge@latest'
   });
 }
 if(selectedlauncher == 'cloud-edge') {
   launchers.push({
     'name'       : 'cloud-edge',
-    'script'    : 'npm install --prefix ./cloud-edge casa-corrently@latest;node ./cloud-edge/node_modules/casa-corrently/standalone.js '+configjson,         // Script to be run
+    'script'    : './run/cloud-edge/node_modules/casa-corrently/standalone.js',         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
     max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
+    'args': configjson,
+    'preLaunch' : 'npm install --prefix ./run/cloud-edge casa-corrently@latest;node',
     'cwd'     : './run/',
   });
 }
 launchContainer(launchers,taskid);
 setInterval(function() {
     launchContainer(launchers,taskid);
-  },86400000);
+  },43400000+Math.round(Math.rand()*43400000));
  return;
 }
 
 bootSingle();
+//
