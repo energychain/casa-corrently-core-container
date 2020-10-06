@@ -149,7 +149,7 @@ if(selectedlauncher == 'cloud-edge') {
 launchContainer(launchers,taskid);
 setInterval(function() {
     launchContainer(launchers,taskid);
-  },43400000+Math.round(Math.rand()*43400000));
+  },43400000+Math.round(Math.random()*43400000));
  return;
 }
 
