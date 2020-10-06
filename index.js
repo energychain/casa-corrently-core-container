@@ -120,7 +120,7 @@ if(selectedlauncher == 'ipfs-edge') {
     'execMode' : 'fork',        // Allows your app to be clustered
     max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
-    'args': configjson
+    'args': configjson,
     'preLaunch' : 'npm install --prefix ./run/ipfs-edge casa-corrently@latest;npm install --prefix ./run/ipfs-edge casa-corrently-ipfs-edge@latest'
   });
 }
