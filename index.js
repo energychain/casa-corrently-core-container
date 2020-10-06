@@ -105,7 +105,7 @@ const bootSingle = async function() {
   if(selectedlauncher == 'openems-edge') {
     launchers.push({
       'name'       : 'openems-edge',
-      'script'    : './run/openems-edge/node_modules/casa-corrently-openems/app.js',         // Script to be run
+      'script'    : './openems-edge/node_modules/casa-corrently-openems/app.js',         // Script to be run
       'execMode' : 'fork',        // Allows your app to be clustered
       'args' : configjson,
       max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
@@ -116,7 +116,7 @@ const bootSingle = async function() {
 if(selectedlauncher == 'ipfs-edge') {
   launchers.push({
     'name'       : 'ipfs-edge',
-    'script'    : './run/ipfs-edge/node_modules/casa-corrently-ipfs-edge/standalone.js',         // Script to be run
+    'script'    : './ipfs-edge/node_modules/casa-corrently-ipfs-edge/standalone.js',         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
     max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
@@ -127,7 +127,7 @@ if(selectedlauncher == 'ipfs-edge') {
 if(selectedlauncher == 'p2p-edge') {
   launchers.push({
     'name'       : 'p2p-edge',
-    'script'    :  './run/p2p-edge/node_modules/casa-corrently/standalone.js',         // Script to be run
+    'script'    :  './p2p-edge/node_modules/casa-corrently/standalone.js',         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
     max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
@@ -138,7 +138,7 @@ if(selectedlauncher == 'p2p-edge') {
 if(selectedlauncher == 'cloud-edge') {
   launchers.push({
     'name'       : 'cloud-edge',
-    'script'    : './run/cloud-edge/node_modules/casa-corrently/standalone.js',         // Script to be run
+    'script'    : './cloud-edge/node_modules/casa-corrently/standalone.js',         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
     max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
     'args': configjson,
