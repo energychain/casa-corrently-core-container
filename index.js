@@ -118,7 +118,7 @@ const bootSingle = async function() {
       'args' : configjson,
       max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
       'cwd'     : './run/',
-      'preLaunch': 'npm install --save --prefix ./run/openems-edge casa-corrently-openems@latest'
+      'preLaunch': 'npm install --prefix ./run/openems-edge casa-corrently-openems@latest'
     });
   }
 if(selectedlauncher == 'ipfs-edge') {
@@ -129,7 +129,7 @@ if(selectedlauncher == 'ipfs-edge') {
     max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
     'args': configjson,
-    'preLaunch' : 'npm install --save --prefix ./run/ipfs-edge casa-corrently@latest;npm install --prefix ./run/ipfs-edge casa-corrently-ipfs-edge@latest'
+    'preLaunch' : 'npm install --prefix ./run/ipfs-edge casa-corrently@latest;npm install --prefix ./run/ipfs-edge casa-corrently-ipfs-edge@latest'
   });
 }
 if(selectedlauncher == 'p2p-edge') {
@@ -140,8 +140,8 @@ if(selectedlauncher == 'p2p-edge') {
     max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
     'args' : configjson,
-    'preLaunch': 'npm install --save --prefix ./run/p2p-edge casa-corrently@latest;npm install --prefix ./run/p2p-edge casa-corrently-ipfs-edge@latest'
-  });
+    'preLaunch': 'npm install --prefix ./run/p2p-edge casa-corrently@latest;npm install --prefix ./run/p2p-edge casa-corrently-ipfs-edge@latest'
+  })
 }
 if(selectedlauncher == 'cloud-edge') {
   launchers.push({
@@ -150,7 +150,7 @@ if(selectedlauncher == 'cloud-edge') {
     'execMode' : 'fork',        // Allows your app to be clustered
     max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
     'args': configjson,
-    'preLaunch' : 'npm install --save --prefix ./run/cloud-edge casa-corrently@latest;npm ci;',
+    'preLaunch' : 'npm install --prefix ./run/cloud-edge casa-corrently@latest;npm ci;',
     'cwd'     : './run/',
   });
 }
