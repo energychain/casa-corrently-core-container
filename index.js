@@ -97,7 +97,7 @@ const bootSingle = async function() {
   try {
     fs.mkdirSync('./run');
   } catch(e) {}
-  )
+
   fs.writeFileSync('./run/config-'+taskid+'.json',JSON.stringify(tmpconfig));
 
   if(typeof tmpconfig.launcher !== 'undefined') {
