@@ -17,6 +17,8 @@ function execShellCommand(cmd) {
  });
 }
 
+const fileExists = async path => !!(await fs.promises.stat(path).catch(e => false));
+
 const launchContainer = async function(launchers,taskid) {
   pm2.connect(async function(err) {
     if (err) {
@@ -28,13 +30,18 @@ const launchContainer = async function(launchers,taskid) {
       try {
         fs.mkdirSync(launchers[i].cwd+launchers[i].name);
       } catch(e) {}
-      fs.writeFileSync(launchers[i].cwd+launchers[i].name+'/package.json',JSON.stringify({
-          "name": "casa-corrently-"+launchers[i].name+"-"+taskid,
-          "version": "0.0.1"
-      }));
+      if(! await fileExists(launchers[i].cwd + "/package.json")) {
+        fs.writeFileSync(launchers[i].cwd+launchers[i].name+'/package.json',JSON.stringify({
+            "name": "casa-corrently-local",
+            "private": true,
+            "version": "0.0.1"
+        }));
+      }
+
       if(typeof launchers[i].preLaunch !== 'undefined') {
             await execShellCommand(launchers[i].preLaunch);
             delete launchers[i].preLaunch;
+            await execShellCommand("cd "+launchers[i].cwd+";npm ci");
             console.log("Setup completed");
       }
       launchers[i].name += '-' + taskid;
@@ -50,7 +57,7 @@ const launchContainer = async function(launchers,taskid) {
   });
 };
 
-const fileExists = async path => !!(await fs.promises.stat(path).catch(e => false));
+
 
 const bootSingle = async function() {
   let launchers  = [];
@@ -90,6 +97,7 @@ const bootSingle = async function() {
   try {
     fs.mkdirSync('./run');
   } catch(e) {}
+  )
   fs.writeFileSync('./run/config-'+taskid+'.json',JSON.stringify(tmpconfig));
 
   if(typeof tmpconfig.launcher !== 'undefined') {
@@ -110,7 +118,7 @@ const bootSingle = async function() {
       'args' : configjson,
       max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
       'cwd'     : './run/',
-      'preLaunch': 'npm install  --prefix ./run/openems-edge casa-corrently-openems@latest'
+      'preLaunch': 'npm install --save --prefix ./run/openems-edge casa-corrently-openems@latest'
     });
   }
 if(selectedlauncher == 'ipfs-edge') {
@@ -118,10 +126,10 @@ if(selectedlauncher == 'ipfs-edge') {
     'name'       : 'ipfs-edge',
     'script'    : './ipfs-edge/node_modules/casa-corrently-ipfs-edge/standalone.js',         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
-    max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
+    max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
     'args': configjson,
-    'preLaunch' : 'npm install --prefix ./run/ipfs-edge casa-corrently@latest;npm install --prefix ./run/ipfs-edge casa-corrently-ipfs-edge@latest'
+    'preLaunch' : 'npm install --save --prefix ./run/ipfs-edge casa-corrently@latest;npm install --prefix ./run/ipfs-edge casa-corrently-ipfs-edge@latest'
   });
 }
 if(selectedlauncher == 'p2p-edge') {
@@ -132,7 +140,7 @@ if(selectedlauncher == 'p2p-edge') {
     max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
     'cwd'     : './run/',
     'args' : configjson,
-    'preLaunch': 'npm install --prefix ./run/p2p-edge casa-corrently@latest;npm install --prefix ./run/p2p-edge casa-corrently-ipfs-edge@latest'
+    'preLaunch': 'npm install --save --prefix ./run/p2p-edge casa-corrently@latest;npm install --prefix ./run/p2p-edge casa-corrently-ipfs-edge@latest'
   });
 }
 if(selectedlauncher == 'cloud-edge') {
@@ -140,9 +148,9 @@ if(selectedlauncher == 'cloud-edge') {
     'name'       : 'cloud-edge',
     'script'    : './cloud-edge/node_modules/casa-corrently/standalone.js',         // Script to be run
     'execMode' : 'fork',        // Allows your app to be clustered
-    max_memory_restart : '300M',   // Optional: Restarts your app if it reaches 100Mo
+    max_memory_restart : '200M',   // Optional: Restarts your app if it reaches 100Mo
     'args': configjson,
-    'preLaunch' : 'npm install --prefix ./run/cloud-edge casa-corrently@latest;node',
+    'preLaunch' : 'npm install --save --prefix ./run/cloud-edge casa-corrently@latest;npm ci;',
     'cwd'     : './run/',
   });
 }
