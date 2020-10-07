@@ -1,6 +1,6 @@
 {
   "name": "casa-corrently-core-container",
-  "version": "1.0.23",
+  "version": "1.1.0",
   "description": "Container service to run and manage local instance of Casa Corrently Energy Cost Monitoring",
   "main": "index.js",
   "scripts": {
@@ -34,6 +34,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "casa-corrently": "^1.0.37",
+    "express": "^4.17.1",
     "pm2": "^4.5.0"
   }
 }

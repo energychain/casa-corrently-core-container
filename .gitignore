@@ -107,3 +107,4 @@ configs/
 package.json.old
 config.json
 run/*
+configs/*
