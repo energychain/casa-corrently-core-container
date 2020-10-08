@@ -31,6 +31,7 @@ function execShellCommand(cmd) {
 }
 
 const installCCandUpdate = async function() {
+  console.log('Install and Update');
   fs.writeFileSync('./package.json',JSON.stringify({
         "name": "casa-corrently-local",
         "private": true,
@@ -47,6 +48,7 @@ const installCCandUpdate = async function() {
 }
 
 const startLocalIPFSService = async function() {
+  console.log('Starting IPFS Service');
   ipfs_publisher = require(process.cwd()+"/node_modules/casa-corrently-ipfs-edge/index.js")({});
   app.get('/p2p', async function (req, res) {
       // caution circular structure with logger attached!
@@ -88,8 +90,9 @@ const onUpdate = async function(confpath) {
                 });
             }
             msgs[config.uuid] = result;
-            await ipfs_publisher.publish(result,config.uuid);
             console.log('Update uuid',config.uuid);
+            await ipfs_publisher.publish(result,config.uuid);
+            console.log('Updated uuid',config.uuid);
         }
       } catch(e) {
         console.log(e);
@@ -103,6 +106,7 @@ const boot = async function() {
   await installCCandUpdate();
   await startLocalIPFSService();
 
+  console.log('Staring WebInterface');
   app.listen(3000);
 
   let confDir = './';
