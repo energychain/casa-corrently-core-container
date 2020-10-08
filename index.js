@@ -48,6 +48,13 @@ const installCCandUpdate = async function() {
 
 const startLocalIPFSService = async function() {
   ipfs_publisher = require(process.cwd()+"/node_modules/casa-corrently-ipfs-edge/index.js")({});
+  app.get('/p2p', async function (req, res) {
+      // caution circular structure with logger attached!
+      let p2pcontent = await ipfs_publisher.info(req.query);
+      // CORS make no sense for P2P!
+      res.header("Access-Control-Allow-Origin", "*");
+      res.send(p2pcontent);
+  });
   return;
 }
 
@@ -71,6 +78,13 @@ const onUpdate = async function(confpath) {
                 app.use('/'+config.uuid,express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
                 app.get('/'+config.uuid+'/msg', async function (req, res) {
                     res.send(msgs[config.uuid]);
+                });
+                app.get('/'+config.uuid+'/p2p', async function (req, res) {
+                    // caution circular structure with logger attached!
+                    let p2pcontent = await ipfs_publisher.info(req.query);
+                    // CORS make no sense for P2P!
+                    res.header("Access-Control-Allow-Origin", "*");
+                    res.send(p2pcontent);
                 });
             }
             msgs[config.uuid] = result;

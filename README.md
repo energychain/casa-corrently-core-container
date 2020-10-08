@@ -35,7 +35,7 @@ Logging
 ## Usage (CLI)
 
 ```shell
-casa-corrently-container /some/path/config.json
+pm2 start -n casa-corrently --time --max-memory-restart 204800000 --cwd /root/configs -c '9 3 * * *' casa-corrently-container
 ```
 
 ### Notes
