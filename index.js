@@ -86,7 +86,7 @@ const onUpdate = async function(confpath) {
 }
 
 const boot = async function() {
-  // await installCCandUpdate();
+  await installCCandUpdate();
   await startLocalIPFSService();
 
   app.listen(3000);
