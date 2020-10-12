@@ -79,6 +79,7 @@ const onUpdate = async function(confpath) {
             if(typeof msgs[config.uuid] == 'undefined') {
                 app.use('/'+config.uuid,express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
                 app.get('/'+config.uuid+'/msg', async function (req, res) {
+                    msgs[config.uuid].localHistory =  await ipfs_publisher.history(config.uuid);
                     res.send(msgs[config.uuid]);
                 });
                 app.get('/'+config.uuid+'/p2p', async function (req, res) {
