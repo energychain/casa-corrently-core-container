@@ -49,7 +49,7 @@ const installCCandUpdate = async function() {
 
 const startLocalIPFSService = async function() {
   console.log('Starting IPFS Service');
-  ipfs_publisher = require(process.cwd()+"/node_modules/casa-corrently-ipfs-edge/index.js")({});
+  ipfs_publisher = require(process.cwd()+"/node_modules/casa-corrently-ipfs-edge/index.js")({uuid:'ipfs-node-edge2',name:'ipfs-node',remoteHistory:true});
   app.get('/p2p', async function (req, res) {
       // caution circular structure with logger attached!
       let p2pcontent = await ipfs_publisher.info(req.query);
