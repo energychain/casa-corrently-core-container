@@ -57,6 +57,13 @@ const startLocalIPFSService = async function() {
       res.header("Access-Control-Allow-Origin", "*");
       res.send(p2pcontent);
   });
+  app.get('/history', async function (req, res) {
+      // caution circular structure with logger attached!
+      let p2pcontent = await ipfs_publisher.history();
+      // CORS make no sense for P2P!
+      res.header("Access-Control-Allow-Origin", "*");
+      res.send(p2pcontent);
+  });
   return;
 }
 
@@ -85,6 +92,13 @@ const onUpdate = async function(confpath) {
                 app.get('/'+config.uuid+'/p2p', async function (req, res) {
                     // caution circular structure with logger attached!
                     let p2pcontent = await ipfs_publisher.info(req.query);
+                    // CORS make no sense for P2P!
+                    res.header("Access-Control-Allow-Origin", "*");
+                    res.send(p2pcontent);
+                });
+                app.get('/'+config.uuid+'/history', async function (req, res) {
+                    // caution circular structure with logger attached!
+                    let p2pcontent = await ipfs_publisher.history();
                     // CORS make no sense for P2P!
                     res.header("Access-Control-Allow-Origin", "*");
                     res.send(p2pcontent);
