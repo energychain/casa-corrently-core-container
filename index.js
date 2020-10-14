@@ -108,14 +108,14 @@ const onUpdate = async function(confpath) {
                 app.get('/'+config.uuid+'/history', async function (req, res) {
                     // caution circular structure with logger attached!
                     let p2pcontent = await ipfs_publisher.history();
-                    let res = [];
+                    let result = [];
                     for(let i=0;i<p2pcontent.length;i++) {
                       if(p2pcontent[i].uuid == req.path.substr(1,req.path.indexOf('/history')-1)) {
-                        res.push(p2pcontent[i]);
+                        result.push(p2pcontent[i]);
                       }
                     }
                     res.header("Access-Control-Allow-Origin", "*");
-                    res.send(p2pcontent);
+                    res.send(result);
                 });
             }
             msgs[config.uuid] = result;
