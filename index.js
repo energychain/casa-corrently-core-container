@@ -6,6 +6,7 @@ const { exec } = require("child_process");
 const express = require('express');
 const app = express();
 let msgs = {};
+let confDir = './';
 
 const memStorage = {
   memstorage:{},
@@ -73,6 +74,10 @@ const startLocalIPFSService = async function() {
       res.header("Access-Control-Allow-Origin", "*");
       res.send(result);
   });
+  app.get('/republish',app.get('/history', async function (req, res) {
+      onUpdate(confDir);
+      res.send({status:'triggered'});
+  });
   return;
 }
 
@@ -91,6 +96,7 @@ const onUpdate = async function(confpath) {
       try {
         let config = JSON.parse(fs.readFileSync(confpath+"/"+files[i]));
         if((typeof config.name !== 'undefined')&&(typeof config.uuid !== 'undefined')) {
+            console.log('Update',config.uuid);
             let result = await main.meterLib(msg,config,memStorage);
             if(typeof msgs[config.uuid] == 'undefined') {
                 app.use('/'+config.uuid,express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
@@ -138,7 +144,7 @@ const boot = async function() {
   console.log('Staring WebInterface');
   app.listen(3000);
 
-  let confDir = './';
+  confDir = './';
   if(process.argv.length == 3) {
       confDir =   process.argv[2];
   }
