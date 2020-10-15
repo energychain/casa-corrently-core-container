@@ -74,7 +74,7 @@ const startLocalIPFSService = async function() {
       res.header("Access-Control-Allow-Origin", "*");
       res.send(result);
   });
-  app.get('/history', async function (req, res) {
+  app.get('/republish', async function (req, res) {
       onUpdate(confDir);
       res.send({status:'triggered'});
   });
