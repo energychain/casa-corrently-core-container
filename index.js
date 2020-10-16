@@ -74,6 +74,11 @@ const startLocalIPFSService = async function() {
       res.header("Access-Control-Allow-Origin", "*");
       res.send(result);
   });
+  app.get('/ipfs', async function (req, res) {
+        res.header("Access-Control-Allow-Origin", "*");
+        const result = await axios.get('https://gateway.pinata.cloud/ipfs/'+req.query.cid);
+        res.send(result.data);
+  });
   app.get('/republish', async function (req, res) {
       onUpdate(confDir);
       res.send({status:'triggered'});
@@ -110,6 +115,11 @@ const onUpdate = async function(confpath) {
                     // CORS make no sense for P2P!
                     res.header("Access-Control-Allow-Origin", "*");
                     res.send(p2pcontent);
+                });
+                app.get('/'+config.uuid+'/ipfs', async function (req, res) {
+                      res.header("Access-Control-Allow-Origin", "*");
+                      const result = await axios.get('https://gateway.pinata.cloud/ipfs/'+req.query.cid);
+                      res.send(result.data);
                 });
                 app.get('/'+config.uuid+'/history', async function (req, res) {
                     // caution circular structure with logger attached!
