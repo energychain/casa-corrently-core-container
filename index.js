@@ -7,6 +7,8 @@ const express = require('express');
 const app = express();
 let msgs = {};
 let confDir = './';
+let uuids = [];
+
 
 const memStorage = {
   memstorage:{},
@@ -51,6 +53,18 @@ const installCCandUpdate = async function() {
 const startLocalIPFSService = async function() {
   console.log('Starting IPFS Service');
   ipfs_publisher = require(process.cwd()+"/node_modules/casa-corrently-ipfs-edge/index.js")({uuid:'ipfs-node-edge2',name:'ipfs-node',remoteHistory:true});
+  app.get('/', async function (req, res) {
+    let index = '<html><head><title>/</title></heady><body><ul>';
+    for(let i=0;i<uuids.length;i++) {
+      index += '<li><a href="'+uuids[i]+'/">'+uuids[i]+'</a></li>';
+    }
+    index += '</ul></body></html>';
+    res.send(index);
+  });
+  app.get('/.json', async function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.send(uuids);
+  });
   app.get('/p2p', async function (req, res) {
       // caution circular structure with logger attached!
       let p2pcontent = await ipfs_publisher.info(req.query);
@@ -96,12 +110,14 @@ const onUpdate = async function(confpath) {
 
   const main = await CasaCorrently();
   let files = fs.readdirSync(confpath);
+  uuids = [];
   for(let i=0;i<files.length;i++) {
     if(files[i].indexOf('.json') > 0) {
       try {
         let config = JSON.parse(fs.readFileSync(confpath+"/"+files[i]));
         if((typeof config.name !== 'undefined')&&(typeof config.uuid !== 'undefined')) {
             console.log('Update',config.uuid);
+            uuids.push(config.uuid);
             let result = await main.meterLib(msg,config,memStorage);
             if(typeof msgs[config.uuid] == 'undefined') {
                 app.use('/'+config.uuid,express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
