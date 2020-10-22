@@ -187,11 +187,12 @@ const onUpdate = async function(confpath) {
 }
 
 const boot = async function() {
+  console.log('Staring WebInterface');
+  let port = process.env.PORT || 3000
+  app.listen(port);
+
   await installCCandUpdate();
   await startLocalIPFSService();
-
-  console.log('Staring WebInterface');
-  app.listen(3000);
 
   confDir = './';
   if(process.argv.length == 3) {
