@@ -5,6 +5,7 @@ const fs = require('fs');
 const { exec } = require("child_process");
 const express = require('express');
 const app = express();
+const axios = require("axios");
 let msgs = {};
 let confDir = './';
 let uuids = [];
@@ -97,6 +98,20 @@ const startLocalIPFSService = async function() {
       onUpdate(confDir);
       res.send({status:'triggered'});
   });
+  app.get('/config', async function (req, res) {
+    if(uuids.length == 0) {
+      const result = await axios.get(req.query.curl);
+      const config = result.data;
+      if(typeof config.uuid == 'undefined') {
+        console.log('Invalid Config');
+        return;
+      }
+      fs.writeFileSync('./'+config.uuid+'.json',JSON.stringify(config));
+      console.log('Wrote: '+config.uuid);
+      onUpdate(confDir);
+      res.send({status:'triggered'});
+    }
+  });
   return;
 }
 
@@ -159,6 +174,14 @@ const onUpdate = async function(confpath) {
         console.log(e);
       }
     }
+  }
+  if(uuids.length == 0) {
+    console.log('Launching Setup Wizzard. Point Browser to: http://localhost:3000/configuration.html');
+    app.use('/',express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
+    app.get('/', async function (req, res) {
+      res.redirect('./configuration.html');
+    });
+
   }
   return;
 }
