@@ -46,6 +46,7 @@ const installCCandUpdate = async function() {
           "casa-corrently-openems": "*"
         }
     }));
+  await execShellCommand('npm install');
   await execShellCommand('npm update');
   await execShellCommand('npm ci');
   return
@@ -190,7 +191,9 @@ const boot = async function() {
   console.log('Staring WebInterface');
   let port = process.env.PORT || 3000
   app.listen(port);
-
+  app.get('/',async function (req, res) {
+      res.send("Installation wird im Hintergrund abgeschlossen. Installation still runnning in background.");
+  });
   await installCCandUpdate();
   await startLocalIPFSService();
 
