@@ -99,8 +99,10 @@ const startLocalIPFSService = async function() {
         console.log('Invalid Config');
         return;
       }
-      fs.writeFileSync('./'+config.uuid+'.json',JSON.stringify(config));
-      console.log('Wrote: '+config.uuid);
+      if(!fs.existsSync('./'+config.uuid+'.json')) {
+        fs.writeFileSync('./'+config.uuid+'.json',JSON.stringify(config));
+        console.log('Wrote: '+config.uuid);
+      }
       onUpdate(confDir);
       res.send({status:'triggered'});
     }
