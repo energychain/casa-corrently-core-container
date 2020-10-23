@@ -55,14 +55,6 @@ const installCCandUpdate = async function() {
 const startLocalIPFSService = async function() {
   console.log('Starting IPFS Service');
   ipfs_publisher = require(process.cwd()+"/node_modules/casa-corrently-ipfs-edge/index.js")({uuid:'ipfs-node-edge2',name:'ipfs-node',remoteHistory:true});
-  app.get('/', async function (req, res) {
-    let index = '<html><head><title>/</title></heady><body><ul>';
-    for(let i=0;i<uuids.length;i++) {
-      index += '<li><a href="'+uuids[i]+'/">'+uuids[i]+'</a></li>';
-    }
-    index += '</ul></body></html>';
-    res.send(index);
-  });
   app.get('/.json', async function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.send(uuids);
@@ -176,14 +168,17 @@ const onUpdate = async function(confpath) {
       }
     }
   }
-  if(uuids.length == 0) {
-    console.log('Launching Setup Wizzard. Point Browser to: http://localhost:3000/configuration.html');
-    app.use('/',express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
-    app.get('/', async function (req, res) {
-      res.redirect('./configuration.html');
-    });
+  console.log('Launching Setup Wizzard. Point Browser to: http://localhost:3000/configuration.html');
+  app.use('/node/',express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
+  app.get('/', async function (req, res) {
+    console.log('/');
+    if(typeof req.query.eA == 'undefined') {
+      res.redirect('/node/login.html');
+    } else {
+      res.redirect('/node/configuration.html');
+    }
+  });
 
-  }
   return;
 }
 
