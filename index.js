@@ -6,6 +6,7 @@ const { exec } = require("child_process");
 const express = require('express');
 const app = express();
 const axios = require("axios");
+let wwwroot = '';
 let msgs = {};
 let confDir = './';
 let uuids = [];
@@ -55,18 +56,18 @@ const installCCandUpdate = async function() {
 const startLocalIPFSService = async function() {
   console.log('Starting IPFS Service');
   ipfs_publisher = require(process.cwd()+"/node_modules/casa-corrently-ipfs-edge/index.js")({uuid:'ipfs-node-edge2',name:'ipfs-node',remoteHistory:true});
-  app.get('/.json', async function (req, res) {
+  app.get(wwwroot+'/.json', async function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.send(uuids);
   });
-  app.get('/p2p', async function (req, res) {
+  app.get(wwwroot+'/p2p', async function (req, res) {
       // caution circular structure with logger attached!
       let p2pcontent = await ipfs_publisher.info(req.query);
       // CORS make no sense for P2P!
       res.header("Access-Control-Allow-Origin", "*");
       res.send(p2pcontent);
   });
-  app.get('/history', async function (req, res) {
+  app.get(wwwroot+'/history', async function (req, res) {
       // caution circular structure with logger attached!
       let p2pcontent = await ipfs_publisher.history();
       let result = [];
@@ -82,16 +83,16 @@ const startLocalIPFSService = async function() {
       res.header("Access-Control-Allow-Origin", "*");
       res.send(result);
   });
-  app.get('/ipfs', async function (req, res) {
+  app.get(wwwroot+'/ipfs', async function (req, res) {
         res.header("Access-Control-Allow-Origin", "*");
         const result = await axios.get('https://gateway.pinata.cloud/ipfs/'+req.query.cid);
         res.send(result.data);
   });
-  app.get('/republish', async function (req, res) {
+  app.get(wwwroot+'/republish', async function (req, res) {
       onUpdate(confDir);
       res.send({status:'triggered'});
   });
-  app.get('/config', async function (req, res) {
+  app.get(wwwroot+'/config', async function (req, res) {
     if(uuids.length == 0) {
       const result = await axios.get(req.query.curl);
       const config = result.data;
@@ -130,24 +131,24 @@ const onUpdate = async function(confpath) {
             uuids.push(config.uuid);
             let result = await main.meterLib(msg,config,memStorage);
             if(typeof msgs[config.uuid] == 'undefined') {
-                app.use('/'+config.uuid,express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
-                app.get('/'+config.uuid+'/msg', async function (req, res) {
+                app.use(wwwroot+'/'+config.uuid,express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
+                app.get(wwwroot+'/'+config.uuid+'/msg', async function (req, res) {
                     msgs[config.uuid].localHistory =  await ipfs_publisher.history(config.uuid);
                     res.send(msgs[config.uuid]);
                 });
-                app.get('/'+config.uuid+'/p2p', async function (req, res) {
+                app.get(wwwroot+'/'+config.uuid+'/p2p', async function (req, res) {
                     // caution circular structure with logger attached!
                     let p2pcontent = await ipfs_publisher.info(req.query);
                     // CORS make no sense for P2P!
                     res.header("Access-Control-Allow-Origin", "*");
                     res.send(p2pcontent);
                 });
-                app.get('/'+config.uuid+'/ipfs', async function (req, res) {
+                app.get(wwwroot+'/'+config.uuid+'/ipfs', async function (req, res) {
                       res.header("Access-Control-Allow-Origin", "*");
                       const result = await axios.get('https://gateway.pinata.cloud/ipfs/'+req.query.cid);
                       res.send(result.data);
                 });
-                app.get('/'+config.uuid+'/history', async function (req, res) {
+                app.get(wwwroot+'/'+config.uuid+'/history', async function (req, res) {
                     // caution circular structure with logger attached!
                     let p2pcontent = await ipfs_publisher.history();
                     let result = [];
@@ -171,9 +172,9 @@ const onUpdate = async function(confpath) {
     }
   }
   console.log('Launching Setup Wizzard. Point Browser to: http://localhost:3000/configuration.html');
-  app.use('/node/',express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
-  app.get('/', async function (req, res) {
-    console.log('/');
+  app.use(wwwroot+'/node/',express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
+  app.get(wwwroot+'/', async function (req, res) {
+    console.log(wwwroot+'/');
     if(typeof req.query.eA == 'undefined') {
       res.redirect('/node/login.html');
     } else {
@@ -186,7 +187,9 @@ const onUpdate = async function(confpath) {
 
 const boot = async function() {
   console.log('Staring WebInterface');
-  let port = process.env.PORT || 3000
+  let port = process.env.PORT || 3000;
+  wwwroot = process.env.wwwroot || '';
+
   app.listen(port);
 
   await installCCandUpdate();
