@@ -85,7 +85,7 @@ const startLocalIPFSService = async function() {
   });
   app.get(wwwroot+'/ipfs', async function (req, res) {
         res.header("Access-Control-Allow-Origin", "*");
-        const result = await axios.get('https://gateway.pinata.cloud/ipfs/'+req.query.cid);
+        const result = await axios.get('https://gateway.ipfs.io/ipfs/'+req.query.cid);
         res.send(result.data);
   });
   app.get(wwwroot+'/republish', async function (req, res) {
