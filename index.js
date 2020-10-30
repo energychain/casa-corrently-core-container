@@ -10,7 +10,8 @@ let wwwroot = '';
 let msgs = {};
 let confDir = './';
 let uuids = [];
-
+let updateCnt = 0;
+let services = [];
 
 const memStorage = {
   memstorage:{},
@@ -113,6 +114,7 @@ const startLocalIPFSService = async function() {
 
 const onUpdate = async function(confpath) {
   const CasaCorrently = require(process.cwd()+"/node_modules/casa-corrently/app.js");
+  updateCnt++;
 
   let msg = {
     payload: {},
@@ -127,7 +129,7 @@ const onUpdate = async function(confpath) {
       try {
         let config = JSON.parse(fs.readFileSync(confpath+"/"+files[i]));
         if((typeof config.name !== 'undefined')&&(typeof config.uuid !== 'undefined')) {
-            console.log('Update',config.uuid);
+            console.log('Update',config.uuid,updateCnt);
             uuids.push(config.uuid);
             let result = await main.meterLib(msg,config,memStorage);
             if(typeof msgs[config.uuid] == 'undefined') {
@@ -162,9 +164,17 @@ const onUpdate = async function(confpath) {
                 });
             }
             msgs[config.uuid] = result;
-            console.log('Update uuid',config.uuid);
             await ipfs_publisher.publish(result,config.uuid);
-            console.log('Updated uuid',config.uuid);
+        } else {
+          // is backend Service
+          if((updateCnt<2)&&(typeof config.module !== 'undefined')) {
+              console.log("Starting Edge Service",config.module);
+              let env = {
+                app: app
+              };
+              const module = require(config.module);
+              services.push(new module(config,env));
+          }
         }
       } catch(e) {
         console.log(e);
