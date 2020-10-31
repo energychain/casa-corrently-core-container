@@ -35,8 +35,8 @@
   "homepage": "https://github.com/energychain/casa-corrently-core-container#readme",
   "dependencies": {
     "axios": "^0.20.0",
-    "casa-corrently": "^1.0.81",
-    "casa-corrently-data-edge": "^1.0.0",
+    "casa-corrently": "^1.0.83",
+    "casa-corrently-data-edge": "^1.0.7",
     "express": "^4.17.1",
     "pm2": "^4.5.0"
   }
