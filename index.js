@@ -48,7 +48,8 @@ const installCCandUpdate = async function() {
           "casa-corrently": "*",
           "casa-corrently-ipfs-edge": "*",
           "casa-corrently-openems": "*",
-          "casa-corrently-influxdb-source": "*"
+          "casa-corrently-influxdb-source": "*",
+          "casa-corrently-data-archive": "*"
         }
     }));
   await execShellCommand('npm install');
