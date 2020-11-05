@@ -7,6 +7,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const axios = require("axios");
+const CCDA = require("casa-corrently-data-archive");
+
 app.use(bodyParser.urlencoded({ extended: true }));
 let wwwroot = '';
 let msgs = {};
@@ -14,6 +16,7 @@ let confDir = './';
 let uuids = [];
 let updateCnt = 0;
 let services = [];
+const ccda = new CCDA({});
 
 const memStorage = {
   memstorage:{},
@@ -136,6 +139,7 @@ const onUpdate = async function(confpath) {
             console.log('Update',config.uuid,updateCnt);
             uuids.push(config.uuid);
             let result = await main.meterLib(msg,config,memStorage);
+            ccda.publish(result);
             if(typeof msgs[config.uuid] == 'undefined') {
                 app.use(wwwroot+'/'+config.uuid,express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
                 app.get(wwwroot+'/'+config.uuid+'/msg', async function (req, res) {
