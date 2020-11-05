@@ -160,9 +160,25 @@ const onUpdate = async function(confpath) {
                 });
                 app.get(wwwroot+'/'+config.uuid+'/history', async function (req, res) {
                     // caution circular structure with logger attached!
-                    let p2pcontent = await ccda.history(req.path.substr(1,req.path.indexOf('/history')-1))
+                    const uuid = req.path.substr(1,req.path.indexOf('/history')-1);
+                    let p2pcontent = await ccda.history(uuid)
+                    let result = [];
+                    for(let i=0;i<p2pcontent.length;i++) {
+                      result.push({
+                        time:p2pcontent[i].time,
+                        uuid:uuid,
+                        stats: {
+                          last24h:p2pcontent[i].last24h_price,
+                          last7d:p2pcontent[i].last7d_price,
+                          last30d:p2pcontent[i].last30d_price,
+                          last90d:p2pcontent[i].last90d_price,
+                          last180d:p2pcontent[i].last180d_price,
+                          last365d:p2pcontent[i].last365d_price,
+                        }
+                      })
+                    }
                     res.header("Access-Control-Allow-Origin", "*");
-                    res.send(p2pcontent);
+                    res.send(result);
                 });
             }
             msgs[config.uuid] = result;
