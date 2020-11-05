@@ -139,8 +139,8 @@ const onUpdate = async function(confpath) {
             console.log('Update',config.uuid,updateCnt);
             uuids.push(config.uuid);
             let result = await main.meterLib(msg,config,memStorage);
-            ccda.publish(result);
             if(typeof msgs[config.uuid] == 'undefined') {
+                ccda.publish(result,config,memStorage);
                 app.use(wwwroot+'/'+config.uuid,express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
                 app.get(wwwroot+'/'+config.uuid+'/msg', async function (req, res) {
                     msgs[config.uuid].localHistory =  await ipfs_publisher.history(config.uuid);
