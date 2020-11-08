@@ -219,12 +219,15 @@ const boot = async function() {
   wwwroot = process.env.wwwroot || '';
 
   app.listen(port);
-
-  await installCCandUpdate();
+  let skippInstall = false;
+  if(process.argv.length == 3) {
+    if(process.argv[2] == '--dev') skippInstall = true;
+  }
+  if(!skippInstall) await installCCandUpdate();
   await startLocalIPFSService();
 
   confDir = './';
-  if(process.argv.length == 3) {
+  if((process.argv.length == 3)&&(!skippInstall)) {
       confDir =   process.argv[2];
   }
   onUpdate(confDir);
