@@ -43,6 +43,7 @@ function execShellCommand(cmd) {
 
 const installCCandUpdate = async function() {
   console.log('Install and Update');
+  fs.writeFileSync("./update.chk",new Date().getTime());
   fs.writeFileSync('./package.json',JSON.stringify({
         "name": "casa-corrently-local",
         "private": true,
@@ -235,6 +236,13 @@ const boot = async function() {
   if(process.argv.length == 3) {
     if(process.argv[2] == '--dev') skippInstall = true;
   }
+  try {
+    const stats = fs.statSync("./update.chk");
+    if(stats.mtimeMs > new Date().getTime()-86400000) skippInstall = true;
+  } catch(e) {
+
+  }
+
   if(!skippInstall) await installCCandUpdate();
   await startLocalIPFSService();
 
