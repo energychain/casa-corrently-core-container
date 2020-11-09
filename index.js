@@ -161,24 +161,36 @@ const onUpdate = async function(confpath) {
                 app.get(wwwroot+'/'+config.uuid+'/history', async function (req, res) {
                     // caution circular structure with logger attached!
                     const uuid = req.path.substr(1,req.path.indexOf('/history')-1);
-                    let p2pcontent = await ccda.history(uuid)
-                    let result = [];
-                    for(let i=0;i<p2pcontent.length;i++) {
-                      result.push({
-                        time:p2pcontent[i].time,
-                        uuid:uuid,
-                        stats: {
-                          last24h:p2pcontent[i].last24h_price,
-                          last7d:p2pcontent[i].last7d_price,
-                          last30d:p2pcontent[i].last30d_price,
-                          last90d:p2pcontent[i].last90d_price,
-                          last180d:p2pcontent[i].last180d_price,
-                          last365d:p2pcontent[i].last365d_price,
-                        }
-                      })
+                    let p2pcontent = await ccda.history(uuid);
+                    if(typeof p2pcontent !== 'undefined') {
+                      let result = [];
+                      for(let i=0;i<p2pcontent.length;i++) {
+                        result.push({
+                          time:p2pcontent[i].time,
+                          uuid:uuid,
+                          stats: {
+                            last24h:p2pcontent[i].last24h_price,
+                            last7d:p2pcontent[i].last7d_price,
+                            last30d:p2pcontent[i].last30d_price,
+                            last90d:p2pcontent[i].last90d_price,
+                            last180d:p2pcontent[i].last180d_price,
+                            last365d:p2pcontent[i].last365d_price,
+                          }
+                        })
+                      }
+                      res.header("Access-Control-Allow-Origin", "*");
+                      res.send(result);
+                    } else {
+                      let p2pcontent = await ipfs_publisher.history();
+                      let result = [];
+                      for(let i=0;i<p2pcontent.length;i++) {
+                          if(p2pcontent[i].uuid == uuid) {
+                            result.push(p2pcontent[i]);
+                          }
+                      }
+                      res.header("Access-Control-Allow-Origin", "*");
+                      res.send(result);
                     }
-                    res.header("Access-Control-Allow-Origin", "*");
-                    res.send(result);
                 });
             }
             msgs[config.uuid] = result;
