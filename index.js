@@ -195,7 +195,25 @@ const onUpdate = async function(confpath) {
                 });
             }
             msgs[config.uuid] = result;
-            await ipfs_publisher.publish(result,config.uuid);
+            let p2pcontent = await ccda.history(config.uuid);
+            if(typeof p2pcontent !== 'undefined') {
+              let result = [];
+              for(let i=0;i<p2pcontent.length;i++) {
+                result.push({
+                  time:p2pcontent[i].time,
+                  uuid:uuid,
+                  stats: {
+                    last24h:p2pcontent[i].last24h_price,
+                    last7d:p2pcontent[i].last7d_price,
+                    last30d:p2pcontent[i].last30d_price,
+                    last90d:p2pcontent[i].last90d_price,
+                    last180d:p2pcontent[i].last180d_price,
+                    last365d:p2pcontent[i].last365d_price,
+                  }
+                })
+              }
+            }
+            await ipfs_publisher.publish(result,config.uuid,p2pcontent);
         } else {
           // is backend Service
           if((updateCnt<2)&&(typeof config.module !== 'undefined')) {
