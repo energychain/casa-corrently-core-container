@@ -1,6 +1,6 @@
 {
   "name": "casa-corrently-core-container",
-  "version": "1.1.65",
+  "version": "1.1.66",
   "description": "Container service to run and manage local instance of Casa Corrently Energy Cost Monitoring",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
   "homepage": "https://github.com/energychain/casa-corrently-core-container#readme",
   "dependencies": {
     "axios": "^0.20.0",
-    "casa-corrently": "^1.0.90",
+    "casa-corrently": "^1.0.92",
     "casa-corrently-data-archive": "^1.0.24",
     "casa-corrently-data-edge": "^1.0.13",
     "casa-corrently-influxdb-source": "^1.0.11",
