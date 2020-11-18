@@ -42,7 +42,7 @@ function execShellCommand(cmd) {
 }
 
 const installCCandUpdate = async function() {
-  console.log('Install and Update');
+  console.log('container:Install and Update');
   fs.writeFileSync("./update.chk",new Date().getTime());
   fs.writeFileSync('./package.json',JSON.stringify({
         "name": "casa-corrently-local",
@@ -63,7 +63,7 @@ const installCCandUpdate = async function() {
 }
 
 const startLocalIPFSService = async function() {
-  console.log('Starting IPFS Service');
+  console.log('container:Starting IPFS Service');
   ipfs_publisher = require(process.cwd()+"/node_modules/casa-corrently-ipfs-edge/index.js")({uuid:'ipfs-node-edge2',name:'ipfs-node',remoteHistory:true});
   app.get(wwwroot+'/.json', async function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -137,7 +137,7 @@ const onUpdate = async function(confpath) {
       try {
         let config = JSON.parse(fs.readFileSync(confpath+"/"+files[i]));
         if((typeof config.name !== 'undefined')&&(typeof config.uuid !== 'undefined')) {
-            console.log('Update',config.uuid,updateCnt);
+            console.log('container:Update',config.uuid,updateCnt);
             uuids.push(config.uuid);
             let result = await main.meterLib(msg,config,memStorage);
             if(typeof msgs[config.uuid] == 'undefined') {
@@ -217,7 +217,7 @@ const onUpdate = async function(confpath) {
         } else {
           // is backend Service
           if((updateCnt<2)&&(typeof config.module !== 'undefined')) {
-              console.log("Starting Edge Service",config.module);
+              console.log("container:Starting Edge Service",config.module);
               let env = {
                 app: app
               };
@@ -230,10 +230,9 @@ const onUpdate = async function(confpath) {
       }
     }
   }
-  console.log('Launching Setup Wizzard. Point Browser to: http://localhost:3000/configuration.html');
+  console.log('container:Launching Setup Wizzard. Point Browser to: http://localhost:3000/configuration.html');
   app.use(wwwroot+'/node/',express.static(process.cwd()+"/node_modules/casa-corrently/public/", {}));
   app.get(wwwroot+'/', async function (req, res) {
-    console.log(wwwroot+'/');
     if(typeof req.query.eA == 'undefined') {
       res.redirect('/node/login.html');
     } else {
@@ -245,7 +244,7 @@ const onUpdate = async function(confpath) {
 }
 
 const boot = async function() {
-  console.log('Staring WebInterface');
+  console.log('container:Staring WebInterface');
   let port = process.env.PORT || 3000;
   wwwroot = process.env.wwwroot || '';
 
@@ -272,7 +271,7 @@ const boot = async function() {
   setInterval(function() {
     onUpdate(confDir);
   },900000);
-  console.log("Update Publisher started");
+  console.log("container:Update Publisher started");
 }
 
 boot();
