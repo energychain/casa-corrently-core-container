@@ -53,6 +53,7 @@ const installCCandUpdate = async function() {
           "casa-corrently-ipfs-edge": "*",
           "casa-corrently-openems": "*",
           "casa-corrently-influxdb-source": "*",
+          "casa-corrently-symcon": "*",
           "casa-corrently-data-archive": "*"
         }
     }));
