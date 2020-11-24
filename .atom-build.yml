@@ -1,5 +1,7 @@
 cmd: git add -A ; git commit -m "Auto Commit" -a ; git push origin master ; npm publish
 targets:
+  deployRPi:
+    cmd: ssh root@192.168.192.54 "npm install -g casa-corrently-core-container@latest; pm2 restart casa-corrently"
   docker-build-push:
     cmd: "docker build -t stromdao/casa-corrently-container .;docker push stromdao/casa-corrently-container"
   docker-run:
