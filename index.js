@@ -202,7 +202,7 @@ const onUpdate = async function(confpath) {
               for(let i=0;i<p2pcontent.length;i++) {
                 result.push({
                   time:p2pcontent[i].time,
-                  uuid:uuid,
+                  uuid:config.uuid,
                   stats: {
                     last24h:p2pcontent[i].last24h_price,
                     last7d:p2pcontent[i].last7d_price,
