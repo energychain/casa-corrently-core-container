@@ -59,7 +59,7 @@ const installCCandUpdate = async function() {
     }));
   await execShellCommand('npm install');
   await execShellCommand('npm update');
-  await execShellCommand('npm ci');
+  await execShellCommand('npm ci --unsafe-perm');
   return
 }
 
